@@ -1,0 +1,6 @@
+@cheska_backend_HostAddress = http://localhost:5151
+
+GET {{cheska_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
