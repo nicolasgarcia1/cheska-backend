@@ -33,3 +33,5 @@ Thumbs.db
 *.local
 .env
 .env.*
+*.cache
+cheska-backend/appsettings.Development.json
