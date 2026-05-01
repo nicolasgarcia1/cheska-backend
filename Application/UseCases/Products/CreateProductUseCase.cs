@@ -17,6 +17,7 @@ public class CreateProductUseCase(IProductRepository repo, ICloudinaryService cl
             Price = dto.Price,
             Cost = dto.Cost,
             Stock = dto.Stock,
+            Contenido = dto.Contenido,
             Category = (ProductCategory)dto.Category,
             IsActive = true
         };
@@ -43,6 +44,7 @@ public class CreateProductUseCase(IProductRepository repo, ICloudinaryService cl
         Cost = isAdmin ? p.Cost : null,
         ProfitMargin = isAdmin ? p.ProfitMargin : null,
         Stock = p.Stock,
+        Contenido = p.Contenido,
         ImageUrl = p.ImageUrl,
         IsActive = p.IsActive,
         Category = p.Category.ToString(),

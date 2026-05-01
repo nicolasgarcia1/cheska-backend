@@ -9,6 +9,7 @@ public class CreateProductDto
     public decimal Price { get; set; }
     public decimal Cost { get; set; }
     public int Stock { get; set; }
+    public string Contenido { get; set; } = string.Empty;
     public int Category { get; set; }
     public IFormFile? Image { get; set; }
 }

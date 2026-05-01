@@ -6,9 +6,10 @@ public class ProductResponseDto
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public decimal Price { get; set; }
-    public decimal? Cost { get; set; }          // null para catálogo público
-    public decimal? ProfitMargin { get; set; }  // null para catálogo público
+    public decimal? Cost { get; set; }          // null para catalogo publico
+    public decimal? ProfitMargin { get; set; }  // null para catalogo publico
     public int Stock { get; set; }
+    public string Contenido { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
     public bool IsActive { get; set; }
     public string Category { get; set; } = string.Empty;

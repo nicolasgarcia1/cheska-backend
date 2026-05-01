@@ -7,6 +7,7 @@ public class Product : BaseEntity
     public decimal Price { get; set; }       // Precio de venta
     public decimal Cost { get; set; }        // Costo (solo admin ve esto)
     public int Stock { get; set; }
+    public string Contenido { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
     public string? CloudinaryPublicId { get; set; }
     public bool IsActive { get; set; } = true;

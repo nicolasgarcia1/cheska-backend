@@ -17,6 +17,7 @@ public class UpdateProductUseCase(IProductRepository repo, ICloudinaryService cl
         product.Price = dto.Price;
         product.Cost = dto.Cost;
         product.Stock = dto.Stock;
+        product.Contenido = dto.Contenido;
         product.IsActive = dto.IsActive;
         product.Category = (Domain.Entities.ProductCategory)dto.Category;
         product.UpdatedAt = DateTime.UtcNow;

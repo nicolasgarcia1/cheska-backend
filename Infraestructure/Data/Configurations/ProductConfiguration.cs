@@ -26,6 +26,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.ImageUrl)
             .HasMaxLength(500);
 
+        builder.Property(p => p.Contenido)
+            .HasMaxLength(50)
+            .HasDefaultValue(string.Empty);
+
         builder.Property(p => p.CloudinaryPublicId)
             .HasMaxLength(200);
 
