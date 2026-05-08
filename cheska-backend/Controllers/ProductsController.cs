@@ -9,6 +9,7 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class ProductsController(
     GetProductsUseCase getProducts,
+    GetProductByIdUseCase getProductById,
     CreateProductUseCase createProduct,
     UpdateProductUseCase updateProduct,
     DeleteProductUseCase deleteProduct) : ControllerBase
@@ -18,6 +19,14 @@ public class ProductsController(
     public async Task<IActionResult> GetAll()
     {
         var result = await getProducts.ExecuteAsync(isAdmin: false);
+        return Ok(result.Data);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await getProductById.ExecuteAsync(id, isAdmin: false);
+        if (!result.IsSuccess) return NotFound(new { message = result.Error });
         return Ok(result.Data);
     }
 
@@ -37,7 +46,7 @@ public class ProductsController(
     {
         var result = await createProduct.ExecuteAsync(dto);
         if (!result.IsSuccess) return BadRequest(new { message = result.Error });
-        return CreatedAtAction(nameof(GetAll), new { id = result.Data!.Id }, result.Data);
+        return CreatedAtAction(nameof(GetById), new { id = result.Data!.Id }, result.Data);
     }
 
     [HttpPut("{id}")]

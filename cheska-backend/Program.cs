@@ -28,6 +28,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Use Cases
 builder.Services.AddScoped<GetProductsUseCase>();
+builder.Services.AddScoped<GetProductByIdUseCase>();
 builder.Services.AddScoped<CreateProductUseCase>();
 builder.Services.AddScoped<UpdateProductUseCase>();
 builder.Services.AddScoped<DeleteProductUseCase>();
