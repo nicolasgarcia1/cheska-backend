@@ -12,6 +12,7 @@ public class ProductsController(
     GetProductByIdUseCase getProductById,
     CreateProductUseCase createProduct,
     UpdateProductUseCase updateProduct,
+    ReplenishProductStockUseCase replenishProductStock,
     DeleteProductUseCase deleteProduct) : ControllerBase
 {
     // Público
@@ -56,6 +57,15 @@ public class ProductsController(
     {
         dto.Id = id;
         var result = await updateProduct.ExecuteAsync(dto);
+        if (!result.IsSuccess) return BadRequest(new { message = result.Error });
+        return Ok(result.Data);
+    }
+
+    [HttpPatch("{id}/stock/replenish")]
+    [Authorize]
+    public async Task<IActionResult> ReplenishStock(int id, [FromBody] ReplenishProductStockDto dto)
+    {
+        var result = await replenishProductStock.ExecuteAsync(id, dto);
         if (!result.IsSuccess) return BadRequest(new { message = result.Error });
         return Ok(result.Data);
     }

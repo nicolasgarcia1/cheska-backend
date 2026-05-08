@@ -15,9 +15,10 @@ public interface IAuthService
 
 public class AuthService(IConfiguration config) : IAuthService
 {
-    // Credenciales hardcodeadas para 1 admin (simple y efectivo)
-    private readonly string _adminUser = config["Admin:Username"] ?? "admin";
-    private readonly string _adminPass = config["Admin:Password"] ?? "admin123";
+    private readonly string _adminUser = config["Admin:Username"]
+        ?? throw new InvalidOperationException("Admin:Username debe estar configurado.");
+    private readonly string _adminPass = config["Admin:Password"]
+        ?? throw new InvalidOperationException("Admin:Password debe estar configurado.");
 
     public TokenResponseDto? Login(LoginDto dto)
     {
@@ -25,7 +26,10 @@ public class AuthService(IConfiguration config) : IAuthService
             return null;
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(config["Jwt:Key"] ?? "super-secret-key-minimum-32-chars!!")
+            Encoding.UTF8.GetBytes(
+                config["Jwt:Key"]
+                    ?? throw new InvalidOperationException("Jwt:Key debe estar configurado.")
+            )
         );
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var expires = DateTime.UtcNow.AddHours(8);

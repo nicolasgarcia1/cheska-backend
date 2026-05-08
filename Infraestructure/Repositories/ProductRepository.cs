@@ -13,7 +13,7 @@ public class ProductRepository(AppDbContext context)
                        .OrderBy(p => p.Name)
                        .ToListAsync();
 
-    public async Task<IEnumerable<Product>> GetLowStockProductsAsync(int threshold = 5)
+    public async Task<IEnumerable<Product>> GetLowStockProductsAsync(int threshold = 1)
         => await _dbSet.Where(p => !p.IsDeleted && p.Stock <= threshold && p.IsActive)
                        .OrderBy(p => p.Stock)
                        .ToListAsync();

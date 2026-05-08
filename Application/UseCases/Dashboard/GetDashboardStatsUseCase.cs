@@ -42,7 +42,7 @@ public class GetDashboardStatsUseCase(ISaleRepository saleRepo, IProductReposito
         var now = DateTime.UtcNow;
         var thisMonthSales = await saleRepo.GetSalesByMonthAsync(now.Year, now.Month);
         var allSales = await saleRepo.GetSalesWithItemsAsync();
-        var lowStock = await productRepo.GetLowStockProductsAsync(5);
+        var lowStock = await productRepo.GetLowStockProductsAsync(1);
 
         // Ventas por mes (últimos 6 meses)
         var salesByMonth = new List<MonthlySaleDto>();

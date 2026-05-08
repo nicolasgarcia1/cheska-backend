@@ -31,12 +31,20 @@ builder.Services.AddScoped<GetProductsUseCase>();
 builder.Services.AddScoped<GetProductByIdUseCase>();
 builder.Services.AddScoped<CreateProductUseCase>();
 builder.Services.AddScoped<UpdateProductUseCase>();
+builder.Services.AddScoped<ReplenishProductStockUseCase>();
 builder.Services.AddScoped<DeleteProductUseCase>();
 builder.Services.AddScoped<CreateSaleUseCase>();
 builder.Services.AddScoped<GetDashboardStatsUseCase>();
 
 // JWT
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "super-secret-key-minimum-32-chars!!";
+var jwtKey = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrWhiteSpace(jwtKey) || jwtKey.Length < 32)
+{
+    throw new InvalidOperationException("Jwt:Key debe estar configurado y tener al menos 32 caracteres.");
+}
+
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
@@ -44,8 +52,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateIssuer = !string.IsNullOrWhiteSpace(jwtIssuer),
+            ValidateAudience = !string.IsNullOrWhiteSpace(jwtAudience),
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience
         };
     });
 
@@ -80,9 +90,17 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // CORS para React
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? (builder.Environment.IsDevelopment() ? ["http://localhost:5173"] : []);
+
+if (allowedOrigins.Length == 0)
+{
+    throw new InvalidOperationException("Cors:AllowedOrigins debe tener al menos un origen permitido.");
+}
+
 builder.Services.AddCors(opt =>
     opt.AddPolicy("ReactApp", policy =>
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyMethod()
               .AllowAnyHeader()));
 
